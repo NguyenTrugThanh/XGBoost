@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Scoring Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+
+<div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+    <h2 class="text-center mb-4 text-primary">Credit Scoring Demo</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label fw-bold">Revolving Utilization</label>
+            <input type="number" step="0.01" name="RevolvingUtilizationOfUnsecuredLines" 
+                   class="form-control" value="{{ request.form.RevolvingUtilizationOfUnsecuredLines or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tuổi</label>
+            <input type="number" name="age" class="form-control" value="{{ request.form.age or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Số lần trễ hạn 30–59 ngày</label>
+            <input type="number" name="NumberOfTime30-59DaysPastDueNotWorse" 
+                   class="form-control" value="{{ request.form['NumberOfTime30-59DaysPastDueNotWorse'] or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tỉ lệ nợ (DebtRatio)</label>
+            <input type="number" step="0.01" name="DebtRatio" class="form-control" 
+                   value="{{ request.form.DebtRatio or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Thu nhập hàng tháng</label>
+            <input type="number" name="MonthlyIncome" class="form-control" 
+                   value="{{ request.form.MonthlyIncome or '' }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Số khoản vay/tín dụng đang mở</label>
+            <input type="number" name="NumberOfOpenCreditLinesAndLoans" class="form-control" 
+                   value="{{ request.form.NumberOfOpenCreditLinesAndLoans or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Số lần trễ hạn 90 ngày</label>
+            <input type="number" name="NumberOfTimes90DaysLate" class="form-control" 
+                   value="{{ request.form.NumberOfTimes90DaysLate or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Số khoản vay bất động sản</label>
+            <input type="number" name="NumberRealEstateLoansOrLines" class="form-control" 
+                   value="{{ request.form.NumberRealEstateLoansOrLines or '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Số lần trễ hạn 60–89 ngày</label>
+            <input type="number" name="NumberOfTime60-89DaysPastDueNotWorse" 
+                   class="form-control" value="{{ request.form['NumberOfTime60-89DaysPastDueNotWorse'] or '' }}" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Số người phụ thuộc</label>
+            <input type="number" name="NumberOfDependents" class="form-control" 
+                   value="{{ request.form.NumberOfDependents or '' }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+            🚀 Dự đoán
+        </button>
+    </form>
+
+    {% if prediction is not none %}
+        <div class="alert mt-4 text-center 
+             {% if label == 'Có nguy cơ vỡ nợ' %}alert-danger{% else %}alert-success{% endif %}">
+            <h5 class="fw-bold mb-2">{{ label }}</h5>
+            <p class="mb-0">
+                Xác suất: <strong>{{ prediction }}%</strong><br>
+                (Ngưỡng phân loại: {{ threshold }}%)
+            </p>
+        </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
